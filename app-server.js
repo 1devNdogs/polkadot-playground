@@ -1,19 +1,46 @@
-// Use this script to serve the build folder.
-// You can use this to serve the app
-// over providers like heroku or your own web server
+const express = require("express");
+var path = require('path');
 
-const express = require("express")
-const path = require("path")
+const app = express();
+const distDir = path.join(__dirname, "public/");
+const PORT = process.env.PORT || 8080;
 
-const app = express()
-const distDir = path.join(__dirname, "public/")
-const port = process.env.PORT || 8080
+function authentication(req, res, next) {
+  var authheader = req.headers.authorization;
+  console.log(req.headers);
 
-app.use(express.static(distDir))
+  if (!authheader) {
+    var err = new Error('Not authenticated Error');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status = 401;
+    return next(err);
+  }
 
-// Handle get requests to return the build app.
+  var auth = new Buffer.from(authheader.split(' ')[1],
+    'base64').toString().split(':');
+  var user = auth[0];
+  var pass = auth[1];
+
+  if (user == 'admin' && pass == 'admin') {
+    next();
+  } else {
+    var err = new Error('You are not authenticated!');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status = 401;
+    return next(err);
+  }
+
+}
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(authentication);
+
+
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(distDir, "index.html"))
-})
+  res.sendFile(path.resolve(distDir, "index.html"));
+});
 
-app.listen(port)
+
+app.listen((PORT), () => {
+  console.log("Server is Running  at http://localhost:" + PORT);
+});
