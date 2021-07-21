@@ -23,11 +23,11 @@ function transformResult([events, getBlock, getHeader]: [Vec<EventRecord>, Signe
 }
 
 function Entry(): React.ReactElement | null {
+  const { t } = useTranslation();
+  const { api, isApiReady } = useApi();
   const bestNumber = useBestNumber();
   const { from, to } = useParams<{ from: string; to: string; }>();
   const [stateValue, setStateValue] = useState<{ from: string; to: string; }>({ from, to });
-  const { t } = useTranslation();
-  const { api, isApiReady } = useApi();
   const [[events], setState] = useState<Array<[KeyedEvent[], SignedBlock, HeaderExtended]>>([]);
 
   useEffect((): void => {
@@ -40,7 +40,7 @@ function Entry(): React.ReactElement | null {
     async function fetchHashes() {
       let resultsEvents: Array<[KeyedEvent[], SignedBlock, HeaderExtended]> = [];
       setState(resultsEvents);
-      for (let index = Number(from); index < Number(to); index++) {
+      for (let index = Number(to); index > Number(from); index--) {
         const hash = await api.rpc.chain.getBlockHash(index.toString());
         const [a, b, c] = await Promise
           .all([

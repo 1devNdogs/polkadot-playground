@@ -25,7 +25,7 @@ function Entry(): React.ReactElement | null {
     async function fetchHashes() {
       let hashes: Array<any> = [];
       setBlockRange(hashes);
-      for (let index = Number(from); index < Number(to); index++) {
+      for (let index = Number(to); index > Number(from); index--) {
         const hash = await api.rpc.chain.getBlockHash(index.toString());
         hashes.push(hash);
       }
