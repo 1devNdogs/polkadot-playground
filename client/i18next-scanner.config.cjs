@@ -54,8 +54,8 @@ module.exports = {
     resource: {
       jsonIndent: 2,
       lineEnding: '\n',
-      loadPath: 'packages/apps/public/locales/{{lng}}/{{ns}}.json',
-      savePath: 'packages/apps/public/locales/{{lng}}/{{ns}}.json'
+      loadPath: 'packages/apps-acala/public/locales/{{lng}}/{{ns}}.json',
+      savePath: 'packages/apps-acala/public/locales/{{lng}}/{{ns}}.json'
     },
     trans: {
       component: 'Trans'

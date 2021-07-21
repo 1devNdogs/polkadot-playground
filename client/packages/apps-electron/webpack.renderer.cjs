@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { merge } = require('webpack-merge');
 
-const baseConfig = require('../apps/webpack.base.cjs');
+const baseConfig = require('../apps-acala/webpack.base.cjs');
 
 const context = __dirname;
 
@@ -17,11 +17,11 @@ module.exports = merge(
   {
     plugins: [
       // It must be placed before HtmlWebpackPlugin
-      new CopyWebpackPlugin({ patterns: [{ from: '../apps/public' }] }),
+      new CopyWebpackPlugin({ patterns: [{ from: '../apps-acala/public' }] }),
       new HtmlWebpackPlugin({
         PAGE_TITLE: 'Polkadot/Substrate Portal',
         inject: true,
-        template: path.join(context, '../apps/public/index.html')
+        template: path.join(context, '../apps-acala/public/index.html')
       })
     ],
     target: 'web'

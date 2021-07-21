@@ -138,7 +138,7 @@ function createWebpack (context, mode = 'production') {
       chunkFilename: '[name].[chunkhash:8].js',
       filename: '[name].[contenthash:8].js',
       globalObject: '(typeof self !== \'undefined\' ? self : this)',
-      path: path.join(context, 'build'),
+      path: path.join(context, '../../../public'),
       publicPath: ''
     },
     performance: {

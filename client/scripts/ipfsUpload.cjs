@@ -13,8 +13,8 @@ const pkgJson = require('../package.json');
 // https://gateway.pinata.cloud/ipfs/
 const GATEWAY = 'https://ipfs.io/ipfs/';
 const DOMAIN = 'dotapps.io';
-const DST = 'packages/apps/build';
-const SRC = 'packages/apps/public';
+const DST = 'packages/apps-acala/build';
+const SRC = 'packages/apps-acala/public';
 const WOPTS = { encoding: 'utf8', flag: 'w' };
 const PINMETA = { name: DOMAIN };
 

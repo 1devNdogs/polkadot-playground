@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "polkadot-task-01",
   "description": "",
   "homepage": ".",
   "private": true,
@@ -7,10 +7,11 @@
   "devDependencies": {
   },
   "scripts": {
-    "start": "node app-server.js"
+    "start": "node app-server.js",
+    "build:front": "cd client && npx yarn build",
+    "acp": "func() { git add --all && git commit -m ${1} && git push origin ${2} ;}; func"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "ws": "^7.4.4"
+    "express": "^4.17.1"
   }
 }

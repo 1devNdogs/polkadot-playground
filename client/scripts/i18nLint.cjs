@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const defaults = {};
-const i18nRoot = path.join(__dirname, '../packages/apps/public/locales');
+const i18nRoot = path.join(__dirname, '../packages/apps-acala/public/locales');
 
 function getEntries (langRoot) {
   return fs
