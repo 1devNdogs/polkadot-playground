@@ -7,9 +7,10 @@ const PORT = process.env.PORT || 8080;
 
 function authentication(req, res, next) {
   var authheader = req.headers.authorization;
-  console.log(req.headers);
 
   if (!authheader) {
+    console.log(req.path);
+
     var err = new Error('Not authenticated Error');
     res.setHeader('WWW-Authenticate', 'Basic');
     err.status = 401;
@@ -32,13 +33,9 @@ function authentication(req, res, next) {
 
 }
 
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(authentication);
+app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(distDir, "index.html"));
-});
 
 
 app.listen((PORT), () => {

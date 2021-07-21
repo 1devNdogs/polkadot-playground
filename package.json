@@ -11,6 +11,8 @@
     "acp": "func() { git add --all && git commit -m ${1} && git push origin ${2} ;}; func"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0"
   }
 }
