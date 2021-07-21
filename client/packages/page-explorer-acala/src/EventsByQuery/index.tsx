@@ -9,6 +9,10 @@ import { useParams } from "react-router-dom";
 import Events from "./Events";
 import Query from "../Query";
 import { useTranslation } from '../translate';
+import SummaryPaginator from "../SummaryPaginator";
+
+
+const PAGE_SIZE: number = 20;
 
 function transformResult([events, getBlock, getHeader]: [Vec<EventRecord>, SignedBlock, HeaderExtended]): [KeyedEvent[], SignedBlock, HeaderExtended] {
   return [
@@ -26,21 +30,25 @@ function Entry(): React.ReactElement | null {
   const { t } = useTranslation();
   const { api, isApiReady } = useApi();
   const bestNumber = useBestNumber();
-  const { from, to } = useParams<{ from: string; to: string; }>();
-  const [stateValue, setStateValue] = useState<{ from: string; to: string; }>({ from, to });
+  const { from, to, page } = useParams<{ from: string; to: string; page: string; }>();
+  const [stateValue, setStateValue] = useState<{ from: string; to: string; page: string; }>({ from, to, page });
   const [[events], setState] = useState<Array<[KeyedEvent[], SignedBlock, HeaderExtended]>>([]);
 
   useEffect((): void => {
     setStateValue(stateValue =>
-      from && to && to !== stateValue.to || from !== stateValue.from ? { from, to } : stateValue
+      from && to && page && to !== stateValue.to || from !== stateValue.from || page !== stateValue.page ? { from, to, page } : stateValue
     );
-  }, [from, to, stateValue]);
+  }, [from, to, page]);
 
   useEffect(() => {
     async function fetchHashes() {
       let resultsEvents: Array<[KeyedEvent[], SignedBlock, HeaderExtended]> = [];
       setState(resultsEvents);
-      for (let index = Number(to); index > Number(from); index--) {
+
+      const pageFrom = Number(from) - ((Number(page) - 1) * PAGE_SIZE);
+      const pageTo = Number(to) - ((Number(page) - 1) * PAGE_SIZE);
+
+      for (let index = Number(pageTo); index > Number(pageFrom); index--) {
         const hash = await api.rpc.chain.getBlockHash(index.toString());
         const [a, b, c] = await Promise
           .all([
@@ -59,13 +67,16 @@ function Entry(): React.ReactElement | null {
 
   useEffect((): void => {
     if ((!from || !to) && bestNumber !== undefined) {
-      window.location.hash = `/explorer/query-events/${Number(bestNumber.toString()) - 20}/${Number(bestNumber.toString())}`;
+      window.location.hash = `/explorer/query-events/${Number(bestNumber.toString()) - 100}/${Number(bestNumber.toString())}/1`;
     }
   }, [bestNumber, isApiReady]);
+
 
   return (
     <>
       <Query page="query-events" />
+      <SummaryPaginator from={Number(from)} to={Number(to)} page={Number(page)} />
+
 
       {!events ? (<div className='connecting'>
         <div className='connecting'>
@@ -78,4 +89,4 @@ function Entry(): React.ReactElement | null {
   );
 }
 
-export default React.memo(Entry);;
+export default React.memo(Entry);

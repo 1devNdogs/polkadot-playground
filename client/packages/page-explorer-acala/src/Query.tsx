@@ -51,7 +51,7 @@ function Query({ className = "", page }: Props): React.ReactElement<Props> {
 
   const _onQuery = useCallback((): void => {
     if (isValidFrom && isValidTo) {
-      window.location.hash = `/explorer/${page}/${fromNumber}/${toNumber}`;
+      window.location.hash = `/explorer/${page}/${fromNumber}/${toNumber}/1`;
     }
   }, [isValidFrom, isValidTo, toNumber, fromNumber]);
 

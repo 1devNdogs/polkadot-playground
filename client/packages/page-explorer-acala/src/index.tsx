@@ -57,9 +57,9 @@ function ExplorerApp({ basePath, className }: Props): React.ReactElement<Props> 
           items={itemsRef.current}
         />
         <Switch>
-          <Route path={`${basePath}/query-blocks/:from/:to`}><BlocksByQuery /></Route>
+          <Route path={`${basePath}/query-blocks/:from/:to/:page`}><BlocksByQuery /></Route>
           <Route path={`${basePath}/query-blocks`}><BlocksByQuery />   </Route>
-          <Route path={`${basePath}/query-events/:from/:to`}><EventsByQuery /></Route>
+          <Route path={`${basePath}/query-events/:from/:to/:page`}><EventsByQuery /></Route>
           <Route path={`${basePath}/query-events`}><EventsByQuery /> </Route>
           <Route path={`${basePath}/query/:value`}><BlockInfo /></Route>
           <Route path={`${basePath}/query`}><BlockInfo /></Route>
