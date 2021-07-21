@@ -8,26 +8,29 @@ import { formatNumber } from '@polkadot/util';
 import { useTranslation } from './translate';
 import PageButton from './PageButton';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 interface Props {
   from: number;
   to: number;
   page: number;
+  route: string;
 }
 
-function SummaryPaginator({ from, to, page }: Props): React.ReactElement {
+function SummaryPaginator({ from, to, page, route }: Props): React.ReactElement {
   const { t } = useTranslation();
+  const pageTo = to - ((page - 1) * PAGE_SIZE);
+  const pageFrom = pageTo - PAGE_SIZE;
 
   // TODO move to new paginator comp
-  const set = (p: string) => {
-    const totalPages = (Number(to) - Number(from)) / PAGE_SIZE;
-    if (!(Number(p) < 1 || Number(p) > totalPages)) {
-      window.location.hash = `/explorer/query-blocks/${from}/${to}/${p}`;
+  const set = (p: number) => {
+    const totalPages = (to - from) / PAGE_SIZE;
+    if (!(p < 1 || p > totalPages)) {
+      window.location.hash = `/explorer/query-${route}/${from}/${to}/${p}`;
     }
   };
 
   const getPages = (): Array<any> => {
-    const totalPages = (Number(to) - Number(from)) / PAGE_SIZE;
+    const totalPages = (to - from) / PAGE_SIZE;
     let renderPages = [];
     for (let i = 1; i <= totalPages; i++) {
       renderPages.push(i);
@@ -40,12 +43,12 @@ function SummaryPaginator({ from, to, page }: Props): React.ReactElement {
       <CardSummary
         className='media--1000'
         label={t<string>('From Block')}>
-        {formatNumber(from - (page - 1) * PAGE_SIZE)}
+        {formatNumber(pageFrom)}
       </CardSummary>
       <CardSummary
         className='media--1000'
         label={t<string>('To Block')}>
-        {formatNumber(to - (page - 1) * PAGE_SIZE)}
+        {formatNumber(pageTo)}
       </CardSummary>
       <CardSummary
         className='media--800'
@@ -62,13 +65,14 @@ function SummaryPaginator({ from, to, page }: Props): React.ReactElement {
           icon='arrow-alt-circle-left'
           isDisabled={false}
           label={t<string>('Back')}
-          onClick={() => { set((Number(page) - 1).toString()); }}
+          onClick={() => { set((page - 1)); }}
         />
         {getPages().map((i) => {
           return (
             <PageButton
               onClick={() => { set(i); }}
               label={i}
+              key={i}
               isSelected={Number(page) === i}
             />
           );
@@ -77,7 +81,7 @@ function SummaryPaginator({ from, to, page }: Props): React.ReactElement {
           icon='arrow-alt-circle-right'
           isDisabled={false}
           label={t<string>('Next')}
-          onClick={() => { set((Number(page) + 1).toString()); }}
+          onClick={() => { set(page + 1); }}
         />
       </Button.Group>
     </SummaryBox>

@@ -78,6 +78,10 @@ export default React.memo(styled(Progress)`
   height: 4rem;
   position: relative;
   width: 4rem;
+  display: block;
+  line-height: 1rem;
+  margin: 0 auto;
+  text-align: center;
 
   &.isDisabled {
     filter: grayscale(100%);
