@@ -4,9 +4,6 @@
   "homepage": ".",
   "private": true,
   "author": "",
-  "engines": {
-    "node": ">=14.16.1"
-  },
   "scripts": {
     "start": "node app-server.js",
     "build": "yarn build:front",
