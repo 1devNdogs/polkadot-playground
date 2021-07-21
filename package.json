@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app-server.js",
     "build": "yarn build:front",
-    "build:front": "cd client && npx yarn build",
+    "build:front": "cd client && yarn install && npx yarn build",
     "acp": "func() { git add --all && git commit -m ${1} && git push origin ${2} ;}; func"
   },
   "dependencies": {
